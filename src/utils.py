@@ -1,3 +1,4 @@
+import discord
 import logging
 import os
 
@@ -39,3 +40,12 @@ def remove_whitelisted_user(user_id: str) -> bool:
             f.write(f"{user}\n")
 
     return True
+
+
+def create_media_embed(user: discord.User, caption: str | None, url: str):
+    embed = discord.Embed(
+        color=discord.Color.from_rgb(85, 125, 135),
+        title=caption,
+        description=f"> _Original by_ : <@{user.id}>\n> _Source_:||{url}||",
+    )
+    return embed

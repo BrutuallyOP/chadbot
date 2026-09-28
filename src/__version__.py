@@ -1,5 +1,6 @@
-VERSION_INFO = "2.5"
+VERSION_INFO = "2.5.1"
 
 WHATS_NEW = """
 - [FEAT] Auto detect singular links, fetch and send them instead of manually calling `/insta`
+- [DEV] Cleaner/compact info embed 
 """

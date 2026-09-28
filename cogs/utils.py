@@ -8,6 +8,7 @@ from src.__version__ import *
 from src.config import EMOJIS
 from src.gemini import *
 from src.media_utils import bg_extractor, download_ig_media, compressor
+from src.utils import create_media_embed
 from typing import TYPE_CHECKING
 from urlextract import URLExtract
 
@@ -94,10 +95,13 @@ class Utility(commands.Cog):
             if len(links) != 1:
                 return
             message_content = message_content.replace(links[0], "")
+
+            author = message.author
+            content = f"{EMOJIS["loading"]} Attempting to download this..."
+            updated_embed = create_media_embed(author, content, links[0])
+
             ack = await message.reply(
-                content=f"{EMOJIS["loading"]} Attempting to download this...",
-                mention_author=True,
-                silent=True,
+                mention_author=True, silent=True, embed=updated_embed
             )
 
             result = await asyncio.to_thread(
@@ -115,9 +119,10 @@ class Utility(commands.Cog):
             if file_size < 20:
                 final_file = file_path
             else:
-                await ack.edit(
-                    content=f"{EMOJIS["catJam"]} File too big, compressing... {EMOJIS["loading"]}"
-                )
+                content = f"{EMOJIS["catJam"]} File too big, compressing... {EMOJIS["loading"]}"
+                updated_embed = create_media_embed(author, content, links[0])
+                await ack.edit(embed=updated_embed)
+
                 file_name = "_".join(
                     str(os.path.basename(file_path))
                     .removesuffix(".mp4")
@@ -130,9 +135,11 @@ class Utility(commands.Cog):
                 )
 
             try:
+                updated_embed = create_media_embed(author, message_content, links[0])
+
                 await ack.edit(
-                    content=f"{message_content}\n\n\n> _Originally sent by_:<@{message.author.id}>\n> _Source_:||{links[0]}||",
                     attachments=[discord.File(final_file)],
+                    embed=updated_embed,
                 )
                 await message.delete()
             except discord.Forbidden:
