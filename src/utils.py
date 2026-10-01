@@ -42,10 +42,12 @@ def remove_whitelisted_user(user_id: str) -> bool:
     return True
 
 
-def create_media_embed(user: discord.User, caption: str | None, url: str):
+def create_media_embed(
+    user: discord.User, title: str | None, caption: str | None, url: str
+):
     embed = discord.Embed(
         color=discord.Color.from_rgb(85, 125, 135),
-        title=caption,
-        description=f"> _Original by_ : <@{user.id}>\n> _Source_:||{url}||",
+        title=title,
+        description=f"{caption if caption is not None else ""}\n> _Original by_ : <@{user.id}>\n> _Source_:||{url}||",
     )
     return embed

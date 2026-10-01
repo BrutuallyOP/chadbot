@@ -30,7 +30,7 @@ def download_ig_media(
         "quiet": True,
         "no_warnings": True,
         "playlist_items": target_index,
-        # "extractor_args": {"generic": {"impersonate": ["chrome"]}},
+        "extractor_args": {"generic": {"impersonate": ["chrome"]}},
     }
 
     try:

@@ -98,7 +98,7 @@ class Utility(commands.Cog):
 
             author = message.author
             content = f"{EMOJIS["loading"]} Attempting to download this..."
-            updated_embed = create_media_embed(author, content, links[0])
+            updated_embed = create_media_embed(author, content, None, links[0])
 
             ack = await message.reply(
                 mention_author=True, silent=True, embed=updated_embed
@@ -120,7 +120,7 @@ class Utility(commands.Cog):
                 final_file = file_path
             else:
                 content = f"{EMOJIS["catJam"]} File too big, compressing... {EMOJIS["loading"]}"
-                updated_embed = create_media_embed(author, content, links[0])
+                updated_embed = create_media_embed(author, content, None, links[0])
                 await ack.edit(embed=updated_embed)
 
                 file_name = "_".join(
@@ -135,7 +135,9 @@ class Utility(commands.Cog):
                 )
 
             try:
-                updated_embed = create_media_embed(author, message_content, links[0])
+                updated_embed = create_media_embed(
+                    author, None, message_content, links[0]
+                )
 
                 await ack.edit(
                     attachments=[discord.File(final_file)],
