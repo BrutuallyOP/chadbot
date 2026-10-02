@@ -9,6 +9,13 @@ Duration after which wordy game ends.
 """
 
 
+IGNORE_DOMAINS = [
+    "klipy",
+    "tenor",
+    "giphy",
+]
+
+
 EMOJIS = {
     "green_A": "<:green_A:1533946763067527248>",
     "green_B": "<:green_B:1533946764921667594>",

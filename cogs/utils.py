@@ -5,10 +5,11 @@ from discord import app_commands
 from discord.ext import commands
 import logging
 from src.__version__ import *
-from src.config import EMOJIS
+from src.config import EMOJIS, IGNORE_DOMAINS
 from src.gemini import *
 from src.media_utils import bg_extractor, download_ig_media, compressor
 from src.utils import create_media_embed
+import tldextract
 from typing import TYPE_CHECKING
 from urlextract import URLExtract
 
@@ -91,9 +92,13 @@ class Utility(commands.Cog):
                 links = extractor.find_urls(message_content, only_unique=True)
             except:
                 logger.warning(f"URLextractor failed...")
-
-            if len(links) != 1:
                 return
+
+            urldata = tldextract.extract(links[0])
+
+            if len(links) != 1 or urldata.domain in IGNORE_DOMAINS:
+                return
+
             message_content = message_content.replace(links[0], "")
 
             author = message.author
